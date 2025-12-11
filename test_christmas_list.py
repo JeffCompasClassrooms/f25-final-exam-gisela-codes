@@ -55,6 +55,41 @@ def describe_christmas_list():
             mock_open.assert_not_called()
             mock_dump.assert_not_called()
 
+
+    def describe_loadItems():
+        def it_loads_an_array_from_a_file_and_returns_it(mocker):
+            mock_isfile = mocker.patch("os.path.isfile", return_value=True)
+            mock_open = mocker.patch("builtins.open", mocker.mock_open())
+            mock_load = mocker.patch("pickle.load", return_value=[{"name": "doll", "purchased": False}, {"name": "switch", "purchased": False}])
+
+            cl = ChristmasList("christmas_list.pkl")
+            result = cl.loadItems()
+
+            mock_open.assert_called_once_with("christmas_list.pkl", "rb")
+            mock_load.assert_called_once_with(mock_open.return_value)
+
+            assert result == [{"name": "doll", "purchased": False}, {"name": "switch", "purchased": False}]
+
+    def describe_saveItems():
+        def it_saves_the_given_array_to_a_file(mocker):
+            mock_isfile = mocker.patch("os.path.isfile", return_value=True)
+            mock_open = mocker.patch("builtins.open", mocker.mock_open())
+            mock_dump = mocker.patch("pickle.dump")
+
+            cl = ChristmasList("christmas_list.pkl")
+            arr = [{"name": "doll", "purchased": False}, {"name": "switch", "purchased": False}]
+            cl.saveItems(arr)
+
+            mock_open.assert_called_once_with("christmas_list.pkl", "wb")
+            mock_dump.assert_called_once_with(arr, mock_open.return_value)
+    
+    def describe_add():
+        pass
+    def describe_check_off():
+        pass
+    def describe_remove():
+        pass
+
     def describe_print_list():
         #save items and add don't achieve the same thing?
         def check_off(saved_presents, capsys):
@@ -68,18 +103,3 @@ def describe_christmas_list():
             h = cl.print_list()
             captured = capsys.readouterr()
             assert captured.out == "[_] bike\n"
-
-
-    def describe_loadItems():
-        pass
-
-    def describe_saveItems():
-        pass
-    def describe_add():
-        pass
-    def describe_check_off():
-        pass
-    def describe_remove():
-        pass
-
-
