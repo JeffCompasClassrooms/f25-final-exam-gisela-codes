@@ -15,3 +15,4 @@ if result == -1:
 else:
     print("Password cracked in " + str(result) + " seconds!")
 
+print(brute.bruteOnce("bye"))
