@@ -14,5 +14,15 @@ jobs:
       - name: Install dependencies
         run: pip install pytest pytest-spec pytest-describe coverage pytest-mock
 
-      - name: run test
-        run: pytest --spec
+      - name: run brute
+        run: |
+          pytest --spec test_brute.py
+          
+      - name: test christmas
+        run: pytest --spec test_christmas_list.py
+
+      - name: coverage
+        run: |
+          coverage run -m pytest
+          coverage report -m
+
